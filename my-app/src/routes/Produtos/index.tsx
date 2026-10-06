@@ -11,7 +11,7 @@ export default function Produto() {
 
     const [produtos, setProdutos] = useState<TipoProduto[]>([]);
 
-    useEffect(() => {
+    useEffect(() => { 
 
         const carregaProdutos = async () => {
 
