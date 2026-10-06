@@ -66,10 +66,11 @@ export default function Produto() {
                 </td>
                 <td>
                   <Link to={`/editar-produtos/${produto.id}`}><FaEdit /></Link>
-                  <span> / </span>
+                  <span>  </span>
                   <a href="#" onClick={(event) => event.preventDefault()}>
                     EXCLUIR
                   </a>
+                  <Link to="#" onClick={() => alert}> </Link>
                 </td>
               </tr>
             ))}
