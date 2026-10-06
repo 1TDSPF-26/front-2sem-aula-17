@@ -1,68 +1,107 @@
-import { useParams } from "react-router";
-import type { tipoProduto } from "../../Types/types";
 import { useEffect, useState } from "react";
-
-
-
+import { useNavigate, useParams } from "react-router";
+import type { tipoProduto } from "../../Types/types";
 
 export default function EditarProdutos() {
   // Para alterar o título da página:
   document.title = "Editar Produtos";
 
-  const { id } = useParams<string>();
-  const [produto, setProdutos] = useState<tipoProduto>({ id: "", nome: "", preco: 0, descricao: "", avatar: "" });
+  const navigate = useNavigate();
+
+  const { id } = useParams<{ id: string }>();
+
+  const [produto, setProduto] = useState<tipoProduto>({ id: "", nome: "", preco: 0, descricao: "", avatar: "" });
 
   useEffect(() => {
 
+    const carregaProduto = async () => {
 
-    const carregarProduto = async () => {
       try {
+        // const response = await fetch("http://localhost:3001/produtos/"+id);
         const response = await fetch(`http://localhost:3001/produtos/${id}`);
-        if (!response.ok) {
-          throw new Error("Erro na listagem dos Produtos");
-        }
-        const data: tipoProduto = await response.json();
 
-        setProdutos(data);
+        //TRATAMENTO DE ERRO
+        if (!response.ok) {
+          throw new Error(
+            `Erro na listagem dos produtos: ${response.status} - ${response.statusText}`,
+          );
+        }
+
+        //SUCESSO
+        const data: tipoProduto = await response.json();
+        setProduto(data);
 
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
-    }
-    carregarProduto();
+    };
 
-  }, [])
+    carregaProduto();
+
+  }, []);
+
+  const handleUpdate = async () => {
+    try {
+
+      const response = await fetch(`http://localhost:3001/produtos/${produto.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produto)
+      });
+
+      //ERRO
+      if (!response.ok) {
+        throw new Error(
+          `Erro na atualização do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      //SUCESSO
+      alert("Produto atualizado com sucesso!");
+      //REDIRECT
+      navigate("/produtos");
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <main>
-      <h2>Editar Produtos Lindos</h2>
+      <h2>Editar Produtos</h2>
       <h1>{id}</h1>
       <div>
-        <form >
+        <form>
           <fieldset>
-            <legend>Dados do Produto:</legend>
+            <legend>Dados do produto:</legend>
             <div>
-              <label htmlFor="nome">Nome Produto</label>
-              <input type="text" name="nome" id="nome" value={produto.nome} onChange={(e) => setProdutos({ ...produto, nome: e.target.value })} />
+              <label htmlFor="nome">Nome do produto </label>
+              <input type="text" name="nome" id="nome" value={produto.nome} onChange={(e) => setProduto({ ...produto, nome: e.target.value })} />
             </div>
             <div>
-              <label htmlFor="preco">Preço Produto</label>
-              <input type="number" step={0.1} name="preco" id="nome" value={produto.preco} onChange={(e) => setProdutos({ ...produto, preco:parseFloat( e.target.value )})} />
+              <label htmlFor="preco">Preço do produto </label>
+              <input type="number" step={0.1} name="preco" id="preco" value={produto.preco} onChange={(e) => setProduto({ ...produto, preco: parseFloat(e.target.value) })} />
             </div>
             <div>
-              <label htmlFor="descricao">Descricao Produto</label>
-              <input type="text" name="descricao" id="nome" value={produto.descricao} onChange={(e) => setProdutos({ ...produto, descricao: e.target.value })} />
+              <label htmlFor="descricao">Descrição do produto </label>
+              <input type="text" name="descricao" id="descricao" value={produto.descricao} onChange={(e) => setProduto({ ...produto, descricao: e.target.value })} />
             </div>
             <div>
-              <label htmlFor="avatar">Avatar Produto</label>
+              <label htmlFor="avatar">Avatar do produto </label>
               <figure>
                 <img src={produto.avatar} alt={produto.nome} />
               </figure>
             </div>
+            <div>
+              <button type="button" onClick={()=>handleUpdate()}>ATUALIZAR</button>
+            </div>
+
           </fieldset>
         </form>
       </div>
-
     </main>
   );
 }
+

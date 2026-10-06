@@ -2,41 +2,39 @@ import { useEffect, useState } from "react"
 import type { tipoProduto } from "../../Types/types";
 import { Link } from "react-router";
 import CardProduto from "../../components/CardProduto";
-import { FaEdit  as Editar}  from "react-icons/fa" ;
-import { MdDeleteForever as Excluir} from "react-icons/md";
+import { FaEdit as Editar } from "react-icons/fa";
+import { MdDeleteForever as Excluir } from "react-icons/md";
 
 export default function Produtos() {
-    // Para alterar o título da página:
-    document.title = "Produtos"
+  // Para alterar o título da página:
+  document.title = "Produtos"
 
-    const[produtos,setProdutos] = useState<tipoProduto[]>([]);
+  const [produtos, setProdutos] = useState<tipoProduto[]>([]);
 
-    useEffect (()=>{
+  useEffect(() => {
 
-        const carregarProdutos = async() =>{
-            try{
-                const response = await fetch("http://localhost:3001/produtos");
-                if (!response.ok){
-                    throw new Error ("Erro na listagem dos Produtos");
-                }
-                const data:tipoProduto[] = await response.json();
-
-                setProdutos(data);
-
-            }catch(error){
-                console.log(error);
-            }
+    const carregarProdutos = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/produtos");
+        if (!response.ok) {
+          throw new Error("Erro na listagem dos Produtos");
         }
-        carregarProdutos();
+        const data: tipoProduto[] = await response.json();
 
-    },[])
+        setProdutos(data);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    carregarProdutos();
+  }, []);
 
 
+  return (
 
-    return (
 
-
-       <main>
+    <main>
       <h2>Produtos</h2>
 
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
@@ -75,8 +73,8 @@ export default function Produtos() {
                   <img src={produto.avatar} alt={produto.nome} width={40} />
                 </td>
                 <td>
-                  <Link to={`/editar-produtos/${produto.id}`}><Editar/></Link> /<Excluir/>
-                  
+                  <Link to={`/editar-produtos/${produto.id}`}><Editar /></Link> /<Excluir />
+
                 </td>
               </tr>
             ))}
