@@ -16,17 +16,10 @@
     },
     {
       "id": "3",
-      "nome": "Smartwatch Fitness",
+      "nome": "Smartwatch Fitness Branquelo",
       "preco": 189.5,
       "descricao": "Monitoramento de frequência cardíaca, contador de passos e resistência à água 5ATM.",
       "avatar": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format&fit=crop&q=80"
-    },
-    {
-      "id": "4",
-      "nome": "Câmera Instantânea Vintage",
-      "preco": 420,
-      "descricao": "Impressão de fotos na hora com ajuste automático de exposição e lente macro integrada.",
-      "avatar": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&auto=format&fit=crop&q=80"
     },
     {
       "id": "5",
