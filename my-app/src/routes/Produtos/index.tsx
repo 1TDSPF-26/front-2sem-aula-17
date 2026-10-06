@@ -64,7 +64,7 @@ export default function Produtos() {
             </tr>
           </thead>
           <tbody>
-            {produtos.map((produto) => (
+            {produtos.map((produto) => ( 
               <tr key={produto.id}>
                 <td>{produto.id}</td>
                 <td>{produto.nome}</td>

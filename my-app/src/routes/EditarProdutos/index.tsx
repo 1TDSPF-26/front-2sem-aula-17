@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import type { TipoProduto } from "../../types/types";
 
 export default function EditarProdutos() {
   // Para alterar o título da página:
   document.title = "Editar Produtos";
 
-  const { id } = useParams<{id:string}>();
+  const navigate = useNavigate();
 
-  const [produto, setProduto] = useState<TipoProduto>({id:"",nome:"",preco:0,descricao:"",avatar:""});
+  const { id } = useParams<{ id: string }>();
 
-  useEffect( ()=>{
+  const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, descricao: "", avatar: "" });
+
+  useEffect(() => {
 
     const carregaProduto = async () => {
-      
+
       try {
         // const response = await fetch("http://localhost:3001/produtos/"+id);
         const response = await fetch(`http://localhost:3001/produtos/${id}`);
@@ -36,7 +38,35 @@ export default function EditarProdutos() {
 
     carregaProduto();
 
-  },[]);
+  }, []);
+
+  const handleUpdate = async () => {
+    try {
+
+      const response = await fetch(`http://localhost:3001/produtos/${produto.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produto)
+      });
+
+      //ERRO
+      if (!response.ok) {
+        throw new Error(
+          `Erro na atualização do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      //SUCESSO
+      alert("Produto atualizado com sucesso!");
+      //REDIRECT
+      navigate("/produtos");
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <main>
@@ -48,15 +78,15 @@ export default function EditarProdutos() {
             <legend>Dados do produto:</legend>
             <div>
               <label htmlFor="nome">Nome do produto </label>
-              <input type="text" name="nome" id="nome" value={produto.nome} onChange={(e) => setProduto({...produto, nome:e.target.value})}/>
+              <input type="text" name="nome" id="nome" value={produto.nome} onChange={(e) => setProduto({ ...produto, nome: e.target.value })} />
             </div>
             <div>
               <label htmlFor="preco">Preço do produto </label>
-              <input type="number" step={0.1} name="preco" id="preco" value={produto.preco} onChange={(e) => setProduto({ ...produto, preco:parseFloat(e.target.value) })} />
+              <input type="number" step={0.1} name="preco" id="preco" value={produto.preco} onChange={(e) => setProduto({ ...produto, preco: parseFloat(e.target.value) })} />
             </div>
             <div>
               <label htmlFor="descricao">Descrição do produto </label>
-              <input type="text" name="descricao" id="descricao" value={produto.descricao} onChange={(e) => setProduto({ ...produto, descricao: e.target.value})} />
+              <input type="text" name="descricao" id="descricao" value={produto.descricao} onChange={(e) => setProduto({ ...produto, descricao: e.target.value })} />
             </div>
             <div>
               <label htmlFor="avatar">Avatar do produto </label>
@@ -65,7 +95,7 @@ export default function EditarProdutos() {
               </figure>
             </div>
             <div>
-              <button type="button">ATUALIZAR</button>
+              <button type="button" onClick={() => handleUpdate()}>ATUALIZAR</button>
             </div>
           </fieldset>
         </form>
