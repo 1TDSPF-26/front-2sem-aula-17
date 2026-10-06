@@ -1,50 +1,76 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import type { tipoProduto } from "../../types/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import CardProduto from "../../components/CardProduto";
-import { FaEdit  as Editar}  from "react-icons/fa" ;
-import { MdDeleteForever as Excluir} from "react-icons/md";
- 
+import { FaEdit as Editar } from "react-icons/fa";
+import { MdDeleteForever as Excluir } from "react-icons/md";
+
 export default function Produtos() {
-    // Para alterar o título da página:
-    document.title = "Produtos"
- 
-    const[produtos,setProdutos] = useState<tipoProduto[]>([]);
- 
-    useEffect (()=>{
- 
-        const carregarProdutos = async() =>{
-            try{
-                const response = await fetch("http://localhost:3001/produtos");
-                if (!response.ok){
-                    throw new Error ("Erro na listagem dos Produtos");
-                }
-                const data:tipoProduto[] = await response.json();
- 
-                setProdutos(data);
- 
-            }catch(error){
-                console.log(error);
-            }
+  // Para alterar o título da página:
+  document.title = "Produtos";
+
+  const navigate = useNavigate();
+
+  const [produtos, setProdutos] = useState<tipoProduto[]>([]);
+
+  useEffect(() => {
+    const carregaProdutos = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/produtos");
+
+        if (!response.ok) {
+          throw new Error(
+            `Erro na listagem dos produtos: ${response.status} - ${response.statusText}`,
+          );
         }
-        carregarProdutos();
- 
-    },[])
- 
- 
- 
-    return (
- 
- 
-       <main>
+
+        const data: tipoProduto[] = await response.json();
+        setProdutos(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    carregaProdutos();
+  }, []);
+
+  //Apresente a lista de produtos em CARDS utilizando PROPS...
+
+
+  const handleDelete = async (id: string) => {
+    try {
+
+      const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+        method: "DELETE"
+      });
+
+      //ERRO
+      if (!response.ok) {
+        throw new Error(
+          `Erro na exclusão do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      //SUCESSO
+      alert("Produto exculído com sucesso!");
+      //REDIRECT
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <main>
       <h2>Produtos</h2>
- 
+
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
         {produtos.map((produto) => (
           <CardProduto key={produto.id} produto={produto} />
         ))}
       </div>
- 
+
       <div>
         <table
           border={1}
@@ -75,8 +101,8 @@ export default function Produtos() {
                   <img src={produto.avatar} alt={produto.nome} width={40} />
                 </td>
                 <td>
-                  <Link to={`/editar-produtos/${produto.id}`}><Editar/></Link> /<Excluir/>
-                 
+                  <Link to={`/editar-produtos/${produto.id}`}><Editar /></Link> /
+                  <Link to="#" onClick={() => handleDelete(produto.id)}><Excluir /></Link>
                 </td>
               </tr>
             ))}
