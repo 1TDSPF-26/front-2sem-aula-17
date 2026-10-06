@@ -16,7 +16,7 @@
     },
     {
       "id": "3",
-      "nome": "Smartwatch Fitness",
+      "nome": "Smartwatch Fitness Branco",
       "preco": 550,
       "descricao": "Monitoramento de frequência cardíaca, contador de passos e a prova d'água 5ATM.",
       "avatar": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format&fit=crop&q=80"
@@ -30,12 +30,11 @@
     },
     {
       "id": "5",
-      "nome": "Mochila Ergonômica para Notebook",
+      "nome": "Mochila para Notebook",
       "preco": 159.9,
       "descricao": "Compartimento acolchoado até 15.6'', tec id o impermeável e entrada USB externa.",
       "avatar": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop&q=80"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
-
 }
