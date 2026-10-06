@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import type { TipoProduto } from "../../types/types";
 
 export default function EditarProdutos() {
   // Para alterar o título da página:
   document.title = "Editar Produtos";
+
+  const navigate = useNavigate();
 
   const { id } = useParams<{id:string}>();
 
@@ -38,6 +40,35 @@ export default function EditarProdutos() {
 
   },[]);
 
+    const handleUpdate = async ()=>{
+    try{
+
+      const response = await fetch(`http://localhost:3001/produtos/${produto.id}`,{
+        method: "PUT",
+        headers:{
+          "Content-Type": "aplication/json"
+        },
+        body: JSON.stringify(produto)
+      });
+
+      //erro
+      if(!response.ok){
+        throw new Error(
+          `Erro na atualização do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      //successo
+      alert("Produto atualizado com sucesso!");
+
+      //redirect 
+      navigate("/produtos");
+
+    } catch(error){
+      console.error(error);
+    }
+  }
+
   return (
     <main>
       <h2>Editar Produtos</h2>
@@ -65,7 +96,7 @@ export default function EditarProdutos() {
               </figure>
             </div>
             <div>
-              <button type="button">ATUALIZAR</button>
+              <button type="button" onClick={() => handleUpdate()}>ATUALIZAR</button>
             </div>
           </fieldset>
         </form>

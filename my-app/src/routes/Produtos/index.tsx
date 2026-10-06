@@ -32,6 +32,8 @@ export default function Produtos() {
     carregaProdutos();
   }, []);
 
+
+
   //Apresente a lista de produtos em CARDS utilizando PROPS...
 
   return (
