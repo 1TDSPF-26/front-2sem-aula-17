@@ -1,10 +1,10 @@
 {
   "produtos": [
-      {
+    {
       "id": "1",
       "nome": "Headset Gamer Sem Fio",
       "preco": 299.9,
-      "descricao": "Áudio espacial 7.1, microfone com cancelamento de ruído e bateria de até 20 horas.",
+      "descricao": "fone gamer para jogar",
       "avatar": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80"
     },
     {
