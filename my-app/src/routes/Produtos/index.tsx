@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { TipoProduto } from "../../types/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import CardProduto from "../../components/CardProduto";
 import { FaEdit as Editar} from "react-icons/fa";
 import { MdDeleteForever as Excluir} from "react-icons/md";
@@ -9,6 +9,7 @@ export default function Produtos() {
   // Para alterar o título da página:
   document.title = "Produtos";
 
+  const navigate = useNavigate();
   const [produtos, setProdutos] = useState<TipoProduto[]>([]);
 
   useEffect(() => {
@@ -32,7 +33,25 @@ export default function Produtos() {
     carregaProdutos();
   }, []);
 
-  
+  const handleDelete = async (id:string) => {
+    try {
+      const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+        method: "DELETE"
+      })
+
+      if (!response.ok) {
+        throw new Error(
+          `Erro na exclusão do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      alert("produto excluido com sucesso")
+      navigate("/");
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
   //Apresente a lista de produtos em CARDS utilizando PROPS...
 
   return (
@@ -76,7 +95,7 @@ export default function Produtos() {
                 </td>
                 <td>
                   <Link to={`/editar-produtos/${produto.id}`}><Editar/></Link> /
-                  <Excluir/>
+                  <Link to="#" onClick={()=> handleDelete(produto.id)}><Excluir/></Link>
                 </td>
               </tr>
             ))}
