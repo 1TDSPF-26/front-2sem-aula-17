@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { TipoProduto } from "../../types/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import CardProduto from "../../components/CardProduto";
 import { FaEdit as Editar} from "react-icons/fa";
 import { MdDeleteForever as Excluir} from "react-icons/md";
@@ -10,6 +10,8 @@ export default function Produtos() {
   document.title = "Produtos";
 
   const [produtos, setProdutos] = useState<TipoProduto[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => { 
     const carregaProdutos = async () => {
@@ -35,6 +37,30 @@ export default function Produtos() {
   }, []);
 
   //Apresente a lista de produtos em CARDS utilizando PROPS...
+
+  const handleDelete = async (id:string) => {
+    try {
+      
+      const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+        method:"DELETE", 
+      });
+
+      if (!response.ok) {
+          throw new Error(
+            `Erro na exclusão dos produtos: ${response.status} - ${response.statusText}`,
+          );
+        }
+
+      //SUCESSO
+      alert("Produto excluido com sucesso!");
+
+      //REDIRECIONAR
+      navigate('/')
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <main>
@@ -77,7 +103,7 @@ export default function Produtos() {
                 </td>
                 <td>
                   <Link to={`/editar-produtos/${produto.id}`}><Editar/></Link> /
-                  <Excluir/>
+                   <Link to="#" onClick={() => handleDelete(produto.id)}><Excluir/></Link>
                 </td>
               </tr>
             ))}
