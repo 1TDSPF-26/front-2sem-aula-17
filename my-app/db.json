@@ -27,13 +27,6 @@
       "preco": 420,
       "descricao": "Impressão de fotos na hora com ajuste automático de exposição e lente macro integrada.",
       "avatar": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&auto=format&fit=crop&q=80"
-    },
-    {
-      "id": "5",
-      "nome": "Mochila Ergonômica para Notebook",
-      "preco": 159.9,
-      "descricao": "Compartimento acolchoado até 15.6'', tec id o impermeável e entrada USB externa.",
-      "avatar": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop&q=80"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
