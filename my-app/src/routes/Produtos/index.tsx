@@ -13,8 +13,9 @@ export default function Produtos() {
 
   useEffect(() => { 
     const carregaProdutos = async () => {
+
       try {
-        const response = await fetch("http://localhost:5173/produtos");
+        const response = await fetch("http://localhost:3001/produtos");
 
         if (!response.ok) {
           throw new Error(
