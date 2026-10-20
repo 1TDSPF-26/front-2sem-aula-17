@@ -10,7 +10,7 @@ export default function EditarProdutos() {
 
   const { id } = useParams<{ id: string }>();
 
-  const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, descricao: "", avatar: "" });
+  const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, estoque: 0, avatar: "" });
 
   useEffect(() => {
 
@@ -85,8 +85,8 @@ export default function EditarProdutos() {
               <input type="number" step={0.1} name="preco" id="preco" value={produto.preco} onChange={(e) => setProduto({ ...produto, preco: parseFloat(e.target.value) })} />
             </div>
             <div>
-              <label htmlFor="descricao">Descrição do produto </label>
-              <input type="text" name="descricao" id="descricao" value={produto.descricao} onChange={(e) => setProduto({ ...produto, descricao: e.target.value })} />
+              <label htmlFor="avatar">Descrição do produto </label>
+              <input type="text" name="avatar" id="avatar" value={produto.avatar} onChange={(e) => setProduto({ ...produto, avatar: e.target.value })} />
             </div>
             <div>
               <label htmlFor="avatar">Avatar do produto </label>
