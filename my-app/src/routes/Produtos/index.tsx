@@ -96,7 +96,7 @@ export default function Produtos() {
                 <td>{produto.id}</td>
                 <td>{produto.nome}</td>
                 <td>{produto.preco}</td>
-                <td>{produto.descricao}</td>
+                <td>{produto.avatar}</td>
                 <td>
                   <img src={produto.avatar} alt={produto.nome} width={40} />
                 </td>

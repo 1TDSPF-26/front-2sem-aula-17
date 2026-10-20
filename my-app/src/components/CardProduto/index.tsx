@@ -15,7 +15,7 @@ export default function CardProduto({produto}:Props ) {
         <p>R${produto.preco}</p>
         <figure>
             <img src={produto.avatar} alt={produto.nome} width={80}/>
-            <figcaption>{produto.descricao}</figcaption>
+            <figcaption>{produto.avatar}</figcaption>
         </figure>
         <div>
             <span><Link to={`/editar-produtos/${produto.id}`}><Editar/></Link></span> - <span><Excluir/></span>
