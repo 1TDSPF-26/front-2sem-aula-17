@@ -12,7 +12,7 @@ export type TipoProdutoForm = {
     avatar: string;
 };
 export type TipoRespostaApi<T> = {
-    status: "sucess" | "error";
+    status: "success" | "error";
     message?: string;
     data?: T;
 };

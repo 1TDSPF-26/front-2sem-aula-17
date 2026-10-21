@@ -20,6 +20,9 @@ export default function EditarProdutos() {
   });
  
   // Busca o produto pelo id utilizando o doGet do Apps Script com query string (?id=...)
+
+  const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, estoque: 0, avatar: "" });
+
   useEffect(() => {
     if (!id) return; // Garante que só executa se o id estiver presente na rota
  
@@ -130,6 +133,8 @@ export default function EditarProdutos() {
                   })
                 }
               />
+              <label htmlFor="avatar">Descrição do produto </label>
+              <input type="text" name="avatar" id="avatar" value={produto.avatar} onChange={(e) => setProduto({ ...produto, avatar: e.target.value })} />
             </div>
             <div>
               <label htmlFor="avatar">URL do Avatar </label>
