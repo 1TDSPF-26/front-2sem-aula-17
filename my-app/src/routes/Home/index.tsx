@@ -24,7 +24,7 @@ type TipoUsuarioGit = {
 
 export default function Home() {
   // Para alterar o título da página:
-  document.title = "Home";
+  document.title = "Home - Usuários GitHub";
 
   const [usuarios, setUsuarios] = useState<TipoUsuarioGit[]>([]);
 

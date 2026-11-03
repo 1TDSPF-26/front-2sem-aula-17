@@ -6,6 +6,7 @@ import { FaEdit as Editar } from "react-icons/fa";
 import { MdDeleteForever as Excluir } from "react-icons/md";
 
 const API_URL = "https://script.google.com/macros/s/AKfycbyv9lzP5PLFeWPE-Y9GwSJQfGQHcs8UbZZHB_s9AlWKUWvRLGqsGDQMrmW8fXtQxTsx3Q/exec"
+const API_URL = "https://script.google.com/macros/s/AKfycbzf7TBpD6BoHmOgrbhr3GlPDUq35TtscfMPo2Zv1-_eQ810X_0U61Kd2vKKxX-i2jJ3ow/exec"
 
 
 export default function Produtos() {

@@ -15,6 +15,9 @@ export default function Produtos() {
   const navigate = useNavigate();
 
   const [produtos, setProdutos] = useState<TipoProduto[]>([]);
+  const { id } = useParams<{ id: string }>();
+
+  const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, estoque: 0, avatar: "" });
 
   useEffect(() => {
     const carregaProdutos = async () => {
@@ -122,6 +125,32 @@ export default function Produtos() {
             </tr>
           </tfoot>
         </table>
+        <form>
+          <fieldset>
+            <legend>Dados do produto:</legend>
+            <div>
+              <label htmlFor="nome">Nome do produto </label>
+              <input type="text" name="nome" id="nome" value={produto.nome} onChange={(e) => setProduto({ ...produto, nome: e.target.value })} />
+            </div>
+            <div>
+              <label htmlFor="preco">Preço do produto </label>
+              <input type="number" step={0.1} name="preco" id="preco" value={produto.preco} onChange={(e) => setProduto({ ...produto, preco: parseFloat(e.target.value) })} />
+            </div>
+            <div>
+              <label htmlFor="avatar">Descrição do produto </label>
+              <input type="text" name="avatar" id="avatar" value={produto.avatar} onChange={(e) => setProduto({ ...produto, avatar: e.target.value })} />
+            </div>
+            <div>
+              <label htmlFor="avatar">Avatar do produto </label>
+              <figure>
+                <img src={produto.avatar} alt={produto.nome} />
+              </figure>
+            </div>
+            <div>
+              <button type="button" onClick={() => handleUpdate()}>ATUALIZAR</button>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </main>
   );
