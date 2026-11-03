@@ -1,67 +1,71 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import type { TipoProduto } from "../../types/types";
+import { Link, useNavigate } from "react-router";
+import CardProduto from "../../components/CardProduto";
+import { FaEdit as Editar } from "react-icons/fa";
+import { MdDeleteForever as Excluir } from "react-icons/md";
 
-export default function EditarProdutos() {
+const API_URL = "https://script.google.com/macros/s/AKfycbyv9lzP5PLFeWPE-Y9GwSJQfGQHcs8UbZZHB_s9AlWKUWvRLGqsGDQMrmW8fXtQxTsx3Q/exec"
+
+
+export default function Produtos() {
   // Para alterar o título da página:
-  document.title = "Editar Produtos";
+  document.title = "Produtos";
 
   const navigate = useNavigate();
 
+  const [produtos, setProdutos] = useState<TipoProduto[]>([]);
   const { id } = useParams<{ id: string }>();
 
   const [produto, setProduto] = useState<TipoProduto>({ id: "", nome: "", preco: 0, estoque: 0, avatar: "" });
 
   useEffect(() => {
-
-    const carregaProduto = async () => {
-
+    const carregaProdutos = async () => {
       try {
-        // const response = await fetch("http://localhost:3001/produtos/"+id);
-        const response = await fetch(`http://localhost:3001/produtos/${id}`);
-
-        //TRATAMENTO DE ERRO
+        // const response = await fetch("http://localhost:3001/produtos");
+        const response = await fetch(API_URL);
         if (!response.ok) {
           throw new Error(
             `Erro na listagem dos produtos: ${response.status} - ${response.statusText}`,
           );
         }
 
-        //SUCESSO
-        const data: TipoProduto = await response.json();
-        setProduto(data);
+        const { data, status } = await response.json();
 
+        if (status === "error") {
+          throw new Error(`Erro na listagem dos produtos ${status}`);
+        }
+
+        setProdutos(data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    carregaProduto();
-
+    carregaProdutos();
   }, []);
 
-  const handleUpdate = async () => {
+  //Apresente a lista de produtos em CARDS utilizando PROPS...
+
+
+  const handleDelete = async (id: string) => {
     try {
 
-      const response = await fetch(`http://localhost:3001/produtos/${produto.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(produto)
+      const response = await fetch(`http://localhost:3001/produtos/${id}`, {
+        method: "DELETE"
       });
 
       //ERRO
       if (!response.ok) {
         throw new Error(
-          `Erro na atualização do produto: ${response.status} - ${response.statusText}`,
+          `Erro na exclusão do produto: ${response.status} - ${response.statusText}`,
         );
       }
 
       //SUCESSO
-      alert("Produto atualizado com sucesso!");
+      alert("Produto exculído com sucesso!");
       //REDIRECT
-      navigate("/produtos");
+      navigate("/");
 
     } catch (error) {
       console.error(error);
@@ -70,9 +74,57 @@ export default function EditarProdutos() {
 
   return (
     <main>
-      <h2>Editar Produtos</h2>
-      <h1>{id}</h1>
+      <h2>Produtos</h2>
+
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+        {produtos.map((produto) => (
+          <CardProduto key={produto.id} produto={produto} />
+        ))}
+      </div>
+
       <div>
+        <table
+          border={1}
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            border: "1px solid black",
+          }}
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NOME</th>
+              <th>PREÇO</th>
+              <th>ESTOQUE</th>
+              <th>AVATAR</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody>
+            {produtos.map((produto) => (
+              <tr key={produto.id}>
+                <td>{produto.id}</td>
+                <td>{produto.nome}</td>
+                <td>{produto.preco}</td>
+                <td>{produto.estoque}</td>
+                <td>{produto.avatar}</td>
+                <td>
+                  <img src={produto.avatar} alt={produto.nome} width={40} />
+                </td>
+                <td>
+                  <Link to={`/editar-produtos/${produto.id}`}><Editar /></Link> /
+                  <Link to="#" onClick={() => handleDelete(produto.id)}><Excluir /></Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={6}>Quantidade de registros : {produtos.length}</td>
+            </tr>
+          </tfoot>
+        </table>
         <form>
           <fieldset>
             <legend>Dados do produto:</legend>
